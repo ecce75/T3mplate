@@ -1,81 +1,94 @@
 import React, { useEffect, useState, useRef } from "react";
 import * as cocoSsd from "@tensorflow-models/coco-ssd";
+import * as bodypix from "@tensorflow-models/body-pix";
 import * as tf from "@tensorflow/tfjs";
 import Webcam from "react-webcam";
 
 function App() {
-    const webcamRef = React.useRef(null);
+    const [showWebcam, setShowWebCam] = useState(false)
+    const webcamRef = useRef(null);
+    const canvasRef = useRef(null)
     const [videoWidth, setVideoWidth] = useState(960);
     const [videoHeight, setVideoHeight] = useState(640);    
     const [model, setModel] = useState();
     const videoConstraints = {
         height: 1080,
         width: 1920,
-        facingMode: "environment",
+        // facingMode: "user",
         };
 
-    async function loadModel() {
-try {
-const model = await cocoSsd.load();
-setModel(model);
-console.log("set loaded Model");
-} 
-catch (err) {
-console.log(err);
-console.log("failed load model");
+const loadBodyPix = async () => {
+    try {
+        const net = await bodypix.load();
+        console.log('model loaded')
+        setInterval(() => {
+            detect(net)
+        }, 100)
+    } catch(err) {
+        console.log(err)
+    }
 }
+
+const detect = async (net) => {
+    if(typeof 
+        webcamRef.current !== 'undefined' &&
+        webcamRef.current !== null &&
+        webcamRef.current.video.readyState === 4
+    ) {
+        const video = webcamRef.current.video;
+        const videoHeight = video.videoHeight;
+        const videoWidth = video.videoWidth;
+
+        webcamRef.current.video.width = videoWidth;
+        webcamRef.current.video.height = videoHeight;
+
+        const person = await net.segmentPersonParts(video)
+        console.log(person)
+
+        const coloredPartImage = bodypix.toColoredPartMask(person);
+        bodypix.drawMask(
+            canvasRef.current,
+            video,
+            coloredPartImage,
+            0.7,
+            0,
+            false
+        )
+    } 
 }
+
 useEffect(() => {
 tf.ready().then(() => {
-loadModel();
+loadBodyPix()
 });
 }, []);
 
-async function predictionFunction() {
-    //Clear the canvas for each prediction
-    var cnvs = document.getElementById("myCanvas");
-    var ctx = cnvs.getContext("2d");
-    ctx.clearRect(0,0, webcamRef.current.video.videoWidth,webcamRef.current.video.videoHeight);
-    //Start prediction
-    const predictions = await model.detect(document.getElementById("img"));
-    if (predictions.length > 0) {
-    console.log(predictions);
-    for (let n = 0; n < predictions.length; n++) {
-    console.log(n);
-    if (predictions[n].score > 0.8) {
-    //Threshold is 0.8 or 80%
-    //Extracting the coordinate and the bounding box information
-    let bboxLeft = predictions[n].bbox[0];
-    let bboxTop = predictions[n].bbox[1];
-    let bboxWidth = predictions[n].bbox[2];
-    let bboxHeight = predictions[n].bbox[3] - bboxTop;
-    console.log("bboxLeft: " + bboxLeft);
-    console.log("bboxTop: " + bboxTop);
-    console.log("bboxWidth: " + bboxWidth);
-    console.log("bboxHeight: " + bboxHeight);
-    //Drawing begin
-    ctx.beginPath();
-    ctx.font = "28px Arial";
-    ctx.fillStyle = "red";
-    ctx.fillText(
-    predictions[n].class +": " + Math.round(parseFloat(predictions[n].score) * 100) +
-    "%", bboxLeft,bboxTop);
-    ctx.rect(bboxLeft, bboxTop, bboxWidth, bboxHeight);
-    ctx.strokeStyle = "#FF0000";
-    ctx.lineWidth = 3;
-    ctx.stroke();
-    console.log("detected");
+const toggleWebcam = async () => {
+    if (showWebcam) {
+      // Webcam is currently open, so close it
+      setShowWebCam(false);
+      const videoStream = webcamRef.current.srcObject;
+      if (videoStream) {
+        videoStream.getVideoTracks().forEach((track) => {
+          track.enabled = false;
+        });
+      }
+    } else {
+      // Webcam is currently closed, so open it
+      try {
+        const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+        setShowWebCam(true);
+        webcamRef.current.srcObject = stream;
+      } catch (error) {
+        console.log("Error accessing webcam:", error);
+      }
     }
-    }
-    }
-    //Rerun prediction by timeout
-    setTimeout(() => predictionFunction(), 500);
-    }
+  };
 
   return (
     <div>
         
-        <button
+        {/* <button
 style={{
 color: "white",
 backgroundColor: "blueviolet",
@@ -83,13 +96,18 @@ width: "50%",
 maxWidth: "250px",
 }}
 onClick={() => {
+setShowWebCam(!showWebcam)
 predictionFunction();
 }}
 >
-Start Detect
-</button>
+{showWebcam ? <>On</> : <>Off</>}
+</button> */}
+
+<button onClick={() => toggleWebcam()}>OFF</button>
+
 
 <div style={{ position: "absolute", top: "400px" }}>
+
 <Webcam
 audio={false}
 id="img"
@@ -104,6 +122,7 @@ videoConstraints={videoConstraints}
 <canvas
 id="myCanvas"
 width={videoWidth}
+ref={canvasRef}
 height={videoHeight}
 style={{ backgroundColor: "transparent" }}
 />
