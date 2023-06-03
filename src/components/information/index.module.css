@@ -1,0 +1,33 @@
+
+@media (orientation: landscape) {
+    .information {
+        position: fixed;
+        background-color: gray;
+        width: 35%;
+        height: auto;
+        transition: all 0.5s;
+        height: 100vh;
+        top: 0;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        
+    }
+    .text {
+        position: relative;
+        /* width: 35%; */
+        /* min-width: 200px; */
+        margin: 20px;
+        color: whitesmoke;
+    }
+    /* .information:hover {
+        width: 300px;
+    } */
+    
+}
+@media (orientation: portrait) {
+    .information {
+        visibility: hidden;
+    }
+    .text {
+        width: 0px;
+    }
+}

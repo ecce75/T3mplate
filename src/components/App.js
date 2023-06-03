@@ -2,6 +2,9 @@ import React, { useEffect, useState, useRef } from "react";
 import * as cocoSsd from "@tensorflow-models/coco-ssd";
 import * as tf from "@tensorflow/tfjs";
 import Webcam from "react-webcam";
+import Information from "./information";
+import styles from '../index.module.css'
+import Header from "./header";
 
 function App() {
     const webcamRef = useRef();
@@ -65,7 +68,13 @@ async function predictionFunction() {
     }
 
   return (
-    <div>App</div>
+    <>
+      <div className={styles['app']}>
+        <div>App</div>
+        <Information/>
+      </div>
+      <Header/>
+    </>
   )
 }
 
