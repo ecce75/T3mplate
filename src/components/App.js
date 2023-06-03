@@ -4,9 +4,17 @@ import * as tf from "@tensorflow/tfjs";
 import Webcam from "react-webcam";
 
 function App() {
-    const webcamRef = useRef();
+    const webcamRef = React.useRef(null);
+    const [videoWidth, setVideoWidth] = useState(960);
+    const [videoHeight, setVideoHeight] = useState(640);    
     const [model, setModel] = useState();
-async function loadModel() {
+    const videoConstraints = {
+        height: 1080,
+        width: 1920,
+        facingMode: "environment",
+        };
+
+    async function loadModel() {
 try {
 const model = await cocoSsd.load();
 setModel(model);
@@ -65,7 +73,43 @@ async function predictionFunction() {
     }
 
   return (
-    <div>App</div>
+    <div>
+        
+        <button
+style={{
+color: "white",
+backgroundColor: "blueviolet",
+width: "50%",
+maxWidth: "250px",
+}}
+onClick={() => {
+predictionFunction();
+}}
+>
+Start Detect
+</button>
+
+<div style={{ position: "absolute", top: "400px" }}>
+<Webcam
+audio={false}
+id="img"
+ref={webcamRef}
+screenshotQuality={1}
+screenshotFormat="image/jpeg"
+videoConstraints={videoConstraints}
+/>
+</div>
+
+<div style={{ position: "absolute", top: "400px", zIndex: "9999" }}>
+<canvas
+id="myCanvas"
+width={videoWidth}
+height={videoHeight}
+style={{ backgroundColor: "transparent" }}
+/>
+</div>
+
+    </div>
   )
 }
 
