@@ -1,6 +1,7 @@
 @media (orientation: portrait) {
 
     .header {
+        z-index: 999;
         box-sizing: border-box;
 
         position: fixed;
@@ -52,7 +53,7 @@
         left: calc(50% - 184px/2 - 0.5px);
         top: 46px;
 
-        font-family: 'Inter';
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         font-style: normal;
         font-weight: 400;
         font-size: 20px;

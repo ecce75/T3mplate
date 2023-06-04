@@ -1,6 +1,6 @@
 import styles from './index.module.css'
 
-const Header = ({show, setShow}) => {
+const Header = ({show, setShow, route}) => {
     return (
         <>
             <div className={styles['header']}>
@@ -8,7 +8,7 @@ const Header = ({show, setShow}) => {
                 <div className={styles['settings']}/>
 
                 <div className={styles['t3mplate']}>
-                    T3mplate
+                    {route.charAt(0).toUpperCase() + route.slice(1)}
                 </div>
 
                 <div className={styles['options']} onClick={() => {

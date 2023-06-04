@@ -1,6 +1,7 @@
 @media (orientation: portrait) {
         
     .buttons {
+        z-index: 999;
         position: fixed;
         
         display: flex;

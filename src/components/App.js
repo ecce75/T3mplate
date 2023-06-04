@@ -8,9 +8,11 @@ import styles from '../index.module.css'
 import Header from "./header";
 import Buttons from "./buttons";
 import Exercises from "./exercises";
+import Chatbox from "./chatbox";
+import Calibrate from "./calibrate";
 
 function App() {
-  const [currentRoute, setRoute] = useState("exercises");
+  const [currentRoute, setRoute] = useState("t3mplate");
   const [showButtons, setShowButtons] = useState(false);
   
   const [showWebcam, setShowWebCam] = useState(false);
@@ -72,20 +74,25 @@ function App() {
       loadBodyPix();
     });
   }, []);
-  let routesDiv = (
+  const routesDiv = (
     <div className={styles['app']}>
         {/* <div>App</div> */}
         <Header 
+          route={currentRoute}
           show={showButtons}
           setShow={setShowButtons}/>
 
-        {<Buttons show={showButtons}/>}
+        {<Buttons show={showButtons} setRoute={setRoute}/>}
 
         {
-          currentRoute === 'home' ? 
+          currentRoute === 't3mplate' ? 
             <Information/> :
           currentRoute === 'exercises' ? 
-            <Exercises/>: 
+            <Exercises/> : 
+          currentRoute === 'consultation' ? 
+            <Chatbox/> :
+          currentRoute === 'calibrate' ?
+            <Calibrate/>:
           <></>
         }
       </div>
@@ -118,7 +125,7 @@ function App() {
   )
 
   return (
-    {routesDiv}
+    routesDiv
   );
 }
 
