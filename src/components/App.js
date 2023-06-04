@@ -5,8 +5,13 @@ import Webcam from "react-webcam";
 import Information from "./information";
 import styles from '../index.module.css'
 import Header from "./header";
+import Buttons from "./buttons";
+import Exercises from "./exercises";
 
 function App() {
+  const [currentRoute, setRoute] = useState("exercises");
+  const [showButtons, setShowButtons] = useState(false);
+
     const webcamRef = useRef();
     const [model, setModel] = useState();
 async function loadModel() {
@@ -70,10 +75,22 @@ async function predictionFunction() {
   return (
     <>
       <div className={styles['app']}>
-        <div>App</div>
-        <Information/>
+        {/* <div>App</div> */}
+        <Header 
+          show={showButtons}
+          setShow={setShowButtons}/>
+
+        {<Buttons show={showButtons}/>}
+
+        {
+          currentRoute === 'home' ? 
+            <Information/> :
+          currentRoute === 'exercises' ? 
+            <Exercises/>: 
+          <></>
+        }
       </div>
-      <Header/>
+
     </>
   )
 }
