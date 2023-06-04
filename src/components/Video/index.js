@@ -15,47 +15,55 @@ const Video = () => {
     const [videoHeight, setVideoHeight] = useState(320);
     const [model, setModel] = useState();
     const [correct, setCorrect] = useState('');
+    const [loading, setLoading] = useState(false);
 
     const videoConstraints = {
-      height: 380,
-      width: 420,
+      height: 580,
+      width: 820,
       facingMode: "user",
     };
 
     const poser = (exercise, pose) => {
+      let correctValues = "";
+    
       switch (exercise) {
-          case 'standing hamstring curl':
-              if (pose.keypoints[10].position.y >= 30) {
-                  console.log(pose.keypoints[10]);
-              } else {
-                  console.log("leg lifted too high");
-              }
-              break;
-          case 'latteral raise':
-              //left elbow
-              if (pose.keypoints[5].position.y >= 190) {
-                  setCorrect("left arm moving correctly");
-              } else if (pose.keypoints[5].position.y < 190) {
-                  setCorrect("left elbow is too high");
-              }
-              //right elbow
-              if (pose.keypoints[6].position.y >= 190) {
-                  setCorrect("right arm moving correctly");
-              } else if (pose.keypoints[6].position.y < 190) {
-                  setCorrect("right elbow is too high");
-              }
-              break;
-          case 'side leg lift':
-              console.log('side leg lift');
-              break;
-          default: console.log("not a valid/recognized/implemented pose");
+        case 'standing hamstring curl':
+          if (pose.keypoints[10].position.y >= 30) {
+            correctValues += "leg lifted correctly\n";
+            console.log('leg lifted correctly')
+          } else {
+            correctValues += "leg lifted too high\n";
+            console.log()
+          }
+          break;
+        case 'latteral raise':
+          // left elbow
+          if (pose.keypoints[5].position.y >= 190) {
+            correctValues += "left arm moving correctly\n";
+          } else if (pose.keypoints[5].position.y < 190) {
+            correctValues += "left elbow is too high\n";
+          }
+          // right elbow
+          if (pose.keypoints[6].position.y >= 190) {
+            correctValues += "right arm moving correctly\n";
+          } else if (pose.keypoints[6].position.y < 190) {
+            correctValues += "right elbow is too high\n";
+          }
+          break;
+        case 'side leg lift':
+          correctValues += "side leg lift\n";
+          break;
+        default:
+          correctValues += "not a valid/recognized/implemented pose\n";
       }
-  }
+    
+      setCorrect(correctValues);
+    };
     
     const loadBodyPix = async () => {
       try {
         const net = await bodypix.load({
-          multiplier: 1,
+          multiplier: 0.75,
         });
         console.log("model loaded");
         setInterval(() => {
@@ -105,9 +113,10 @@ const Video = () => {
   }, []);
 
   return (
-    <div id="video-page" style={{ position: 'relative' }}>
+    <div id="video-page" style={{ position: 'relative', display: "flex", justifyContent: 'space-between' }}>
+      {correct}
         <div ref={ref} style={{ width: 100, height: 100 }}>
-        <div style={{ position: 'absolute', top: "200px", left: "300px" }}>
+        <div style={{ position: 'absolute', top: "160%", left: "300px" }}>
         {
             inView ? <Webcam
             audio={false}
@@ -119,7 +128,7 @@ const Video = () => {
           /> : null
         }
       </div>
-      <div style={{ position: 'absolute', top: "200px", zIndex: "9999", left: "300px" }}>
+      <div style={{ position: 'absolute', top: "160%", zIndex: "9999", left: "300px" }}>
         <canvas
           id="myCanvas"
           width={videoWidth}
@@ -128,10 +137,13 @@ const Video = () => {
           style={{ backgroundColor: "transparent" }}
         />
       </div>
-        <div style={{ zIndex: 92340938 }}>
+        </div>
+        {/* <div style={{ position: 'absolute', top: "160%", zIndex: "99992", left: "700px" }}>
         {correct}
-        </div>
-        </div>
+
+        <span style={{ display: 'block', marginTop: 10, marginBottom: 10 }}>Follow this video to improve your form</span>
+        <img style={{ width: 320, height: 420, objectFit: 'cover' }} src="https://media.discordapp.net/attachments/1114524817543139429/1114976052029161512/ezgif-4-deeef034cf.gif?width=341&height=606"/>
+        </div> */}
     </div>
   )
 }

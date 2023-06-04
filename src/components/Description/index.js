@@ -2,9 +2,7 @@ import React, { useEffect } from 'react'
 import cameraImg from '../../resources/camera.png';
 import personImg from '../../resources/person.png';
 import deviceImg from '../../resources/device.png';
-import myGif from "../../resources/latteral.gif";
 import lottie from 'lottie-web';
-import arrow from '../../resources/arrow.gif';
 
 const Description = () => {
 
@@ -61,7 +59,7 @@ const Description = () => {
 
         <div className='video-container'>
           <div>
-            <img className='pose-gif' src={myGif} alt="LATTERAL RAISE"></img>
+            <img className='pose-gif' src='https://media.discordapp.net/attachments/1114524817543139429/1115035447672983643/ezgif-4-4e812c4408.gif?width=420&height=606' alt="LATTERAL RAISE"></img>
           </div>
         </div>
 
