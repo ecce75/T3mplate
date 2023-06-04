@@ -10,9 +10,6 @@ import Buttons from "./buttons";
 import Exercises from "./exercises";
 
 function App() {
-  const [currentRoute, setRoute] = useState("exercises");
-  const [showButtons, setShowButtons] = useState(false);
-
   const [showWebcam, setShowWebCam] = useState(false);
   const webcamRef = useRef(null);
   const canvasRef = useRef(null);
@@ -73,9 +70,9 @@ function App() {
     });
   }, []);
 
-  const cameraDiv = (
-  <div>
-    <div style={{ position: "absolute", top: "400px" }}>
+  return (
+    <div>
+      <div style={{ position: "absolute", top: "400px" }}>
         <Webcam
           audio={false}
           id="img"
@@ -96,33 +93,8 @@ function App() {
         />
       </div>
     </div>
-    
-  </div>);
-  let routesDiv = (
-    <div className={styles['app']}>
-        {/* <div>App</div> */}
-        <Header 
-          show={showButtons}
-          setShow={setShowButtons}/>
-
-        {<Buttons show={showButtons}/>}
-
-        {
-          currentRoute === 'home' ? 
-            <Information/> :
-          currentRoute === 'exercises' ? 
-            <Exercises/>: 
-          <></>
-        }
-      </div>
-  )
-  return (
-
-
-    <>
-      {routesDiv}
-
-    </>
+      
+    </div>
   );
 }
 
