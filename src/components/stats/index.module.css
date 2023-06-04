@@ -1,0 +1,45 @@
+
+@media (orientation: landscape) {
+    .information {
+        position: fixed;
+        background-color: gray;
+        width: 35%;
+        left: 65%;
+
+        height: auto;
+        transition: all 0.5s;
+        height: 100vh;
+        top: 0;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        
+    }
+    .text {
+        position: relative;
+        /* width: 35%; */
+        /* min-width: 200px; */
+        margin: 20px;
+        color: whitesmoke;
+    }
+    /* .information:hover {
+        width: 300px;
+    } */
+    
+}
+@media (orientation: portrait) {
+    .information {
+        position: fixed;
+        background-color: gray;
+        height: 35%;
+        width: auto;
+        left: 0;
+        bottom: 35%;
+        transition: all 0.5s;
+        /* transition-duration: 0.5s; */
+        width: 100vh;
+        /* left: 0; */
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    .text {
+        visibility: hidden;
+    }
+}
