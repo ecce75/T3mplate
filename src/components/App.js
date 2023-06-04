@@ -1,8 +1,10 @@
 import React, { useEffect, useState, useRef } from "react";
-import * as cocoSsd from "@tensorflow-models/coco-ssd";
 import * as bodypix from "@tensorflow-models/body-pix";
 import * as tf from "@tensorflow/tfjs";
 import Webcam from "react-webcam";
+import Information from "./information";
+import Header from "./header";
+
 
 function App() {
   const [showWebcam, setShowWebCam] = useState(false);
@@ -12,9 +14,9 @@ function App() {
   const [videoHeight, setVideoHeight] = useState(320);
   const [model, setModel] = useState();
   const videoConstraints = {
-    height: 480,
-    width: 640,
-    // facingMode: "user",
+    height: 380,
+    width: 420,
+    facingMode: "user",
   };
 
   const loadBodyPix = async () => {
@@ -67,15 +69,16 @@ function App() {
 
   return (
     <div>
+      <Header />
       <div style={{ position: "absolute", top: "400px" }}>
-        <Webcam
+        {/* <Webcam
           audio={false}
           id="img"
           ref={webcamRef}
           screenshotQuality={1}
           screenshotFormat="image/jpeg"
           videoConstraints={videoConstraints}
-        />
+        /> */}
       </div>
     <div>
     <div style={{ position: "absolute", top: "400px", zIndex: "9999" }}>
