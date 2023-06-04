@@ -1,4 +1,3 @@
-import manImg from '../../man.png';
 import HeaderTop from './HeaderTop';
 
 const Header = () => {
