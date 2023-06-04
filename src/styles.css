@@ -130,7 +130,7 @@
     text-transform: uppercase;
     /* background-color: #E4D0D0; */
     background-color: #144272;
-    color: #2C74B3;
+    color: #FFF;
     line-height: 70px;
     letter-spacing: 5px;
 }
@@ -206,7 +206,7 @@
     content: '';
     width: 0%;
     height: 2px;
-    background: #0A2647;
+    background: #FFF;
     display: block;
     transition: 0.5s;
   }

@@ -27,7 +27,7 @@ function App() {
       console.log("model loaded");
       setInterval(() => {
         detect(net);
-      }, 10);
+      }, 100);
     } catch (err) {
       console.log(err);
     }
