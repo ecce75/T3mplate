@@ -1,21 +1,20 @@
+import manImg from '../../man.png';
+import HeaderTop from './HeaderTop';
+
 const Header = () => {
   return (
-    <div className="header">
+    <div>
+      <HeaderTop />
+      <div className="header">
       <div className="t3mplate">
-        <span className="heading">T3mplate</span>
-        <span className="sub-text">Making Physiotherapy Easier</span>
+        <span className="heading">AI physiotherapy using motion tracking</span>
+        <span className="sub-text">Exercise and recieve instant feedback from AI physiotherapist</span>
         <div className="btn-container">
-        <button class="btn">Explore</button>
+        <a href='#video-page' class="btn">Start Exercise</a>
         </div>
       </div>
-      <div className="auth-container">
-        <a className="auth-link" href="/">
-          Login
-        </a>
-        <a className="auth-link" href="/">
-          Signup
-        </a>
-      </div>
+      <img className='manImg' src='https://media.discordapp.net/attachments/1114498895758753802/1114870678915653713/image.png?width=606&height=606' />
+    </div>
     </div>
   );
 };
