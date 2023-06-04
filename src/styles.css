@@ -257,12 +257,35 @@
     background-color: #025464;
 }
 
+.main-intructions {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+    background-color: #025464;
+    position: relative;
+}
+
 .instructions-container {
     display: flex;
     justify-content: space-between;
-    border: 1px solid #000;
     height: 100%;
     background-color: #025464;
+    padding: 2rem;
+}
+
+.arrow-container {
+    background-color: #025464;
+    /* position: relative; */
+    display: flex;
+    justify-content: flex-end;
+}
+
+.arrow-main {
+    background-color: #025464;
+    position: absolute;
+    top: 50%;
+    left: 105%;
 }
 
 .all-ins {
@@ -279,6 +302,12 @@
 
 .video-container {
     background-color: #025464;
+}
+
+.pose-gif {
+    width: 100%;
+    height: 600px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
 }
 
 @media (max-width: 768px) {

@@ -3,7 +3,6 @@ import * as bodypix from "@tensorflow-models/body-pix";
 import * as tf from "@tensorflow/tfjs";
 import Webcam from "react-webcam";
 import { useInView } from "react-intersection-observer";
-import { poser } from "../../helpers/poser";
 
 const Video = () => {
     const { ref, inView, entry } = useInView({
@@ -15,12 +14,44 @@ const Video = () => {
     const [videoWidth, setVideoWidth] = useState(480);
     const [videoHeight, setVideoHeight] = useState(320);
     const [model, setModel] = useState();
+    const [correct, setCorrect] = useState('');
+
     const videoConstraints = {
       height: 380,
       width: 420,
       facingMode: "user",
     };
 
+    const poser = (exercise, pose) => {
+      switch (exercise) {
+          case 'standing hamstring curl':
+              if (pose.keypoints[10].position.y >= 30) {
+                  console.log(pose.keypoints[10]);
+              } else {
+                  console.log("leg lifted too high");
+              }
+              break;
+          case 'latteral raise':
+              //left elbow
+              if (pose.keypoints[5].position.y >= 190) {
+                  setCorrect("left arm moving correctly");
+              } else if (pose.keypoints[5].position.y < 190) {
+                  setCorrect("left elbow is too high");
+              }
+              //right elbow
+              if (pose.keypoints[6].position.y >= 190) {
+                  setCorrect("right arm moving correctly");
+              } else if (pose.keypoints[6].position.y < 190) {
+                  setCorrect("right elbow is too high");
+              }
+              break;
+          case 'side leg lift':
+              console.log('side leg lift');
+              break;
+          default: console.log("not a valid/recognized/implemented pose");
+      }
+  }
+    
     const loadBodyPix = async () => {
       try {
         const net = await bodypix.load({
@@ -35,7 +66,8 @@ const Video = () => {
       }
     };
 
-  
+    console.log(correct)
+
     const detect = async (net) => {
       if (
         typeof webcamRef.current !== "undefined" &&
@@ -50,10 +82,9 @@ const Video = () => {
         webcamRef.current.video.height = videoHeight;
   
         const person = await net.segmentPersonParts(video);
-        const personParts = person.allPoses.forEach(pose => {
+        person.allPoses.forEach(pose => {
             poser("latteral raise", pose)
         });
-        console.log(personParts)
 
         const coloredPartImage = bodypix.toColoredPartMask(person);
         bodypix.drawMask(
@@ -72,8 +103,6 @@ const Video = () => {
       loadBodyPix();
     });
   }, []);
-
- console.log(inView)
 
   return (
     <div id="video-page" style={{ position: 'relative' }}>
@@ -99,6 +128,9 @@ const Video = () => {
           style={{ backgroundColor: "transparent" }}
         />
       </div>
+        <div style={{ zIndex: 92340938 }}>
+        {correct}
+        </div>
         </div>
     </div>
   )
