@@ -90,8 +90,7 @@ function App() {
         }
       </div>
   )
-
-  return (
+  let cameraDiv = (
     <div>
       <div style={{ position: "absolute", top: "400px" }}>
         <Webcam
@@ -103,19 +102,23 @@ function App() {
           videoConstraints={videoConstraints}
         />
       </div>
-    <div>
-    <div style={{ position: "absolute", top: "400px", zIndex: "9999" }}>
-        <canvas
-          id="myCanvas"
-          width={videoWidth}
-          ref={canvasRef}
-          height={videoHeight}
-          style={{ backgroundColor: "transparent" }}
-        />
+      <div>
+      <div style={{ position: "absolute", top: "400px", zIndex: "9999" }}>
+          <canvas
+            id="myCanvas"
+            width={videoWidth}
+            ref={canvasRef}
+            height={videoHeight}
+            style={{ backgroundColor: "transparent" }}
+          />
+        </div>
       </div>
-    </div>
       
     </div>
+  )
+
+  return (
+    {routesDiv}
   );
 }
 
