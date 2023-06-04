@@ -295,4 +295,7 @@
     }
 }
 
-
+.video-container img {
+    height: 900px;
+    margin-right: 3vw;
+}
