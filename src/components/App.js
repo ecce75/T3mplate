@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useRef } from "react";
 import * as cocoSsd from "@tensorflow-models/coco-ssd";
+import * as bodypix from "@tensorflow-models/body-pix";
 import * as tf from "@tensorflow/tfjs";
 import Webcam from "react-webcam";
 import Information from "./information";
@@ -12,69 +13,93 @@ function App() {
   const [currentRoute, setRoute] = useState("exercises");
   const [showButtons, setShowButtons] = useState(false);
 
-    const webcamRef = useRef();
-    const [model, setModel] = useState();
-async function loadModel() {
-try {
-const model = await cocoSsd.load();
-setModel(model);
-console.log("set loaded Model");
-} 
-catch (err) {
-console.log(err);
-console.log("failed load model");
-}
-}
-useEffect(() => {
-tf.ready().then(() => {
-loadModel();
-});
-}, []);
+  const [showWebcam, setShowWebCam] = useState(false);
+  const webcamRef = useRef(null);
+  const canvasRef = useRef(null);
+  const [videoWidth, setVideoWidth] = useState(480);
+  const [videoHeight, setVideoHeight] = useState(320);
+  const [model, setModel] = useState();
+  const videoConstraints = {
+    height: 480,
+    width: 640,
+    // facingMode: "user",
+  };
 
-async function predictionFunction() {
-    //Clear the canvas for each prediction
-    var cnvs = document.getElementById("myCanvas");
-    var ctx = cnvs.getContext("2d");
-    ctx.clearRect(0,0, webcamRef.current.video.videoWidth,webcamRef.current.video.videoHeight);
-    //Start prediction
-    const predictions = await model.detect(document.getElementById("img"));
-    if (predictions.length > 0) {
-    console.log(predictions);
-    for (let n = 0; n < predictions.length; n++) {
-    console.log(n);
-    if (predictions[n].score > 0.8) {
-    //Threshold is 0.8 or 80%
-    //Extracting the coordinate and the bounding box information
-    let bboxLeft = predictions[n].bbox[0];
-    let bboxTop = predictions[n].bbox[1];
-    let bboxWidth = predictions[n].bbox[2];
-    let bboxHeight = predictions[n].bbox[3] - bboxTop;
-    console.log("bboxLeft: " + bboxLeft);
-    console.log("bboxTop: " + bboxTop);
-    console.log("bboxWidth: " + bboxWidth);
-    console.log("bboxHeight: " + bboxHeight);
-    //Drawing begin
-    ctx.beginPath();
-    ctx.font = "28px Arial";
-    ctx.fillStyle = "red";
-    ctx.fillText(
-    predictions[n].class +": " + Math.round(parseFloat(predictions[n].score) * 100) +
-    "%", bboxLeft,bboxTop);
-    ctx.rect(bboxLeft, bboxTop, bboxWidth, bboxHeight);
-    ctx.strokeStyle = "#FF0000";
-    ctx.lineWidth = 3;
-    ctx.stroke();
-    console.log("detected");
+  const loadBodyPix = async () => {
+    try {
+      const net = await bodypix.load({
+        multiplier: 0.5,
+      });
+      console.log("model loaded");
+      setInterval(() => {
+        detect(net);
+      }, 10);
+    } catch (err) {
+      console.log(err);
     }
-    }
-    }
-    //Rerun prediction by timeout
-    setTimeout(() => predictionFunction(), 500);
-    }
+  };
 
-  return (
-    <>
-      <div className={styles['app']}>
+  const detect = async (net) => {
+    if (
+      typeof webcamRef.current !== "undefined" &&
+      webcamRef.current !== null &&
+      webcamRef.current.video.readyState === 4
+    ) {
+      const video = webcamRef.current.video;
+      const videoHeight = video.videoHeight;
+      const videoWidth = video.videoWidth;
+
+      webcamRef.current.video.width = videoWidth;
+      webcamRef.current.video.height = videoHeight;
+
+      const person = await net.segmentPersonParts(video);
+      console.log(person);
+
+      const coloredPartImage = bodypix.toColoredPartMask(person);
+      bodypix.drawMask(
+        canvasRef.current,
+        video,
+        coloredPartImage,
+        0.7,
+        0,
+        false
+      );
+    }
+  };
+
+  useEffect(() => {
+    tf.ready().then(() => {
+      loadBodyPix();
+    });
+  }, []);
+
+  const cameraDiv = (
+  <div>
+    <div style={{ position: "absolute", top: "400px" }}>
+        <Webcam
+          audio={false}
+          id="img"
+          ref={webcamRef}
+          screenshotQuality={1}
+          screenshotFormat="image/jpeg"
+          videoConstraints={videoConstraints}
+        />
+      </div>
+    <div>
+    <div style={{ position: "absolute", top: "400px", zIndex: "9999" }}>
+        <canvas
+          id="myCanvas"
+          width={videoWidth}
+          ref={canvasRef}
+          height={videoHeight}
+          style={{ backgroundColor: "transparent" }}
+        />
+      </div>
+    </div>
+    
+  </div>);
+  let routesDiv = (
+    <div className={styles['app']}>
         {/* <div>App</div> */}
         <Header 
           show={showButtons}
@@ -90,9 +115,15 @@ async function predictionFunction() {
           <></>
         }
       </div>
+  )
+  return (
+
+
+    <>
+      {routesDiv}
 
     </>
-  )
+  );
 }
 
-export default App
+export default App;
