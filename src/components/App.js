@@ -3,8 +3,16 @@ import * as cocoSsd from "@tensorflow-models/coco-ssd";
 import * as bodypix from "@tensorflow-models/body-pix";
 import * as tf from "@tensorflow/tfjs";
 import Webcam from "react-webcam";
+import Information from "./information";
+import styles from '../index.module.css'
+import Header from "./header";
+import Buttons from "./buttons";
+import Exercises from "./exercises";
 
 function App() {
+  const [currentRoute, setRoute] = useState("exercises");
+  const [showButtons, setShowButtons] = useState(false);
+
   const [showWebcam, setShowWebCam] = useState(false);
   const webcamRef = useRef(null);
   const canvasRef = useRef(null);
@@ -65,9 +73,9 @@ function App() {
     });
   }, []);
 
-  return (
-    <div>
-      <div style={{ position: "absolute", top: "400px" }}>
+  const cameraDiv = (
+  <div>
+    <div style={{ position: "absolute", top: "400px" }}>
         <Webcam
           audio={false}
           id="img"
@@ -88,8 +96,33 @@ function App() {
         />
       </div>
     </div>
-      
-    </div>
+    
+  </div>);
+  let routesDiv = (
+    <div className={styles['app']}>
+        {/* <div>App</div> */}
+        <Header 
+          show={showButtons}
+          setShow={setShowButtons}/>
+
+        {<Buttons show={showButtons}/>}
+
+        {
+          currentRoute === 'home' ? 
+            <Information/> :
+          currentRoute === 'exercises' ? 
+            <Exercises/>: 
+          <></>
+        }
+      </div>
+  )
+  return (
+
+
+    <>
+      {routesDiv}
+
+    </>
   );
 }
 

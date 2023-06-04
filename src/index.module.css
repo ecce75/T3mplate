@@ -1,0 +1,19 @@
+@media (orientation: landscape) {
+    .app {
+        /* display: flex;
+        flex-direction: row; */
+        /* margin: auto; */
+        /* align-content: end; */
+        /* justify-content: flex-end; */
+    }
+}
+@media (orientation: portrait) {
+    .app {
+        display: flex;
+        /* flex-direction: row; */
+        /* margin: auto; */
+        /* align-content: end; */
+        /* justify-content: flex-end; */
+    }
+}
+

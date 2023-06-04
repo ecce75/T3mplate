@@ -1,0 +1,28 @@
+@media (orientation: portrait) {
+        
+    .buttons {
+        position: fixed;
+        
+        display: flex;
+        flex-direction: column;
+
+        width: 133px;
+        height: auto;
+        
+        top: 80px;
+        left: calc(100% - 130px);
+        
+        transition: all 0.5s;
+        
+    }
+
+    .first {
+        border-radius: 10px 10px 0px 0px;
+
+    }
+    .last {
+        border-radius: 0px 0px 10px 10px;
+
+    }
+
+}

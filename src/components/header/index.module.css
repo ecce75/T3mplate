@@ -1,0 +1,87 @@
+@media (orientation: portrait) {
+
+    .header {
+        box-sizing: border-box;
+
+        position: fixed;
+        width: 375px;
+        height: 77px;
+        left: 0;
+        top: 0;
+
+        background: #D9D9D9;
+        border-bottom: 1px solid #000000;
+        box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+
+        display: flex;
+
+    }
+
+
+    .settings {
+
+        position: relative;
+        width: 30px;
+        height: 30px;
+        left: 15px;
+        top: 31px;
+
+        background: url('/public/images/settings.svg');
+    }
+
+
+
+    .options {
+
+        position: fixed;
+        width: 37px;
+        height: 36px;
+        left: 321px;
+        top: 28px;
+
+        background: url('/public/images/pngegg.svg');
+    }
+
+
+    .t3mplate {
+        /* T3mplate */
+
+        position: absolute;
+        width: 184px;
+        height: 0px;
+        left: calc(50% - 184px/2 - 0.5px);
+        top: 46px;
+
+        font-family: 'Inter';
+        font-style: normal;
+        font-weight: 400;
+        font-size: 20px;
+        line-height: 0%;
+        /* identical to box height, or 0px */
+        /* display: flex; */
+        align-items: center;
+        text-align: center;
+        letter-spacing: 0.27em;
+
+        color: #000000;
+
+
+
+
+    }
+    
+
+
+}
+@media (orientation: landscape) {
+    .t3mplate {
+        visibility: hidden;
+
+    }
+    
+
+
+}
+
+
+
