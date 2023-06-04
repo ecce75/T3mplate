@@ -2,6 +2,7 @@ import React from 'react'
 import cameraImg from '../../resources/camera.png';
 import personImg from '../../resources/person.png';
 import deviceImg from '../../resources/device.png';
+import myGif from "../../resources/latteral.gif";
 
 const Description = () => {
   return (
@@ -30,8 +31,11 @@ const Description = () => {
         </div>
 
         <div className='video-container'>
-            kajsld
+          <div>
+            <img src={myGif} alt="LATTERAL RAISE"></img>
+          </div>
         </div>
+
 
         </div> 
     </div>
