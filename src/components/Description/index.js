@@ -53,8 +53,6 @@ const Description = () => {
         <img style={{ width: '200px', height: '200px', backgroundColor: '#025464'  }} src='https://media3.giphy.com/media/Lqxe1bLj4HB76uLF0w/giphy.gif?cid=ecf05e476i8u8fo4e2jkgjky3zwx1738qcr9dpmm3r2d6a7q&ep=v1_stickers_search&rid=giphy.gif&ct=s' alt="LATTERAL RAISE"></img>
             </div>
         </div> 
-
-
         </div>
 
         <div className='video-container'>

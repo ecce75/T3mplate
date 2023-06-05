@@ -33,21 +33,25 @@ const Video = () => {
             console.log('leg lifted correctly')
           } else {
             correctValues += "leg lifted too high\n";
-            console.log()
+            console.log(pose)
           }
           break;
         case 'latteral raise':
           // left elbow
-          if (pose.keypoints[5].position.y >= 190) {
+          if (pose.keypoints[5].position.y >= 190 && pose.keypoints[5].position.y <= 240) {
             correctValues += "left arm moving correctly\n";
           } else if (pose.keypoints[5].position.y < 190) {
-            correctValues += "left elbow is too high\n";
+            correctValues += "left elbow is too low\n";
+          } else if (pose.keypoints[5].position.y >240) {
+            correctValues += "left elbow is too High\n";
           }
           // right elbow
-          if (pose.keypoints[6].position.y >= 190) {
-            correctValues += "right arm moving correctly\n";
+          if (pose.keypoints[6].position.y >= 190 && pose.keypoints[6].position.y <= 240) {
+            correctValues += "left arm moving correctly\n";
           } else if (pose.keypoints[6].position.y < 190) {
-            correctValues += "right elbow is too high\n";
+            correctValues += "left elbow is too low\n";
+          } else if (pose.keypoints[6].position.y >240) {
+            correctValues += "left elbow is too High\n";
           }
           break;
         case 'side leg lift':
@@ -63,7 +67,7 @@ const Video = () => {
     const loadBodyPix = async () => {
       try {
         const net = await bodypix.load({
-          multiplier: 0.75,
+          multiplier: 1,
         });
         console.log("model loaded");
         setInterval(() => {
@@ -73,9 +77,7 @@ const Video = () => {
         console.log(err);
       }
     };
-
-    console.log(correct)
-
+    
     const detect = async (net) => {
       if (
         typeof webcamRef.current !== "undefined" &&
@@ -114,9 +116,8 @@ const Video = () => {
 
   return (
     <div id="video-page" style={{ position: 'relative', display: "flex", justifyContent: 'space-between' }}>
-      {correct}
         <div ref={ref} style={{ width: 100, height: 100 }}>
-        <div style={{ position: 'absolute', top: "160%", left: "300px" }}>
+        <div style={{ position: 'absolute', top: "120%", left: "100px" }}>
         {
             inView ? <Webcam
             audio={false}
@@ -128,7 +129,7 @@ const Video = () => {
           /> : null
         }
       </div>
-      <div style={{ position: 'absolute', top: "160%", zIndex: "9999", left: "300px" }}>
+      <div style={{ position: 'absolute', top: "120%", zIndex: "9999", left: "100px" }}>
         <canvas
           id="myCanvas"
           width={videoWidth}
@@ -138,12 +139,12 @@ const Video = () => {
         />
       </div>
         </div>
-        {/* <div style={{ position: 'absolute', top: "160%", zIndex: "99992", left: "700px" }}>
+        <div style={{ position: 'absolute', top: "160%", zIndex: "99992", left: "1000px" }}>
         {correct}
 
         <span style={{ display: 'block', marginTop: 10, marginBottom: 10 }}>Follow this video to improve your form</span>
         <img style={{ width: 320, height: 420, objectFit: 'cover' }} src="https://media.discordapp.net/attachments/1114524817543139429/1114976052029161512/ezgif-4-deeef034cf.gif?width=341&height=606"/>
-        </div> */}
+        </div>
     </div>
   )
 }
